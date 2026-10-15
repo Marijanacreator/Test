@@ -1,41 +1,45 @@
-# Upit za proizvod — prototip
+# Rekord Erdeš — katalog proizvoda
 
-Statička stranica sa centralizovanom formom za upit, zavisnim izborom kategorije, vrste i proizvoda, pretragom i Web3Forms slanjem.
+Statički prototip kataloga sa četiri zasebne stranice i centralnom formom za upit.
 
-## Postavljanje na GitHub
+## Stranice
 
-1. Napravite novi repozitorijum.
-2. Raspakujte ZIP na računaru.
-3. Dodajte **sadržaj foldera** u koren repozitorijuma. `index.html` treba da bude u korenu, a ne unutar dodatnog foldera.
-4. Sačuvajte fajlove kroz commit.
+- `index.html` — početna i ulaz u kategorije.
+- `klimatizacija.html` — Daikin Sensira zidne unutrašnje jedinice.
+- `izolacija.html` — Austrotherm EPS i XPS proizvodi.
+- `grejanje.html` — Danfoss termostati i regulacija.
+- `toplotne-pumpe.html` — Vaillant aroTHERM spoljašnje jedinice.
+- `upit.html` — centralizovana forma za jedan proizvod ili opšti upit.
+- `izvori.html` — izvori podataka za svaki proizvod.
 
-## GitHub Pages
+Ukupno 16 referentnih proizvoda, po 4 u svakoj kategoriji. Uklonjene su ranije sekcije o uslugama.
 
-U repozitorijumu otvorite **Settings → Pages**. Za izvor odaberite **Deploy from a branch**, zatim granu `main` i folder `/ (root)`, pa sačuvajte. Kada objavljivanje bude završeno, Pages prikazuje adresu sajta.
+## Postavljanje
 
-Nema build komande, paketa za instaliranje ni backend-a. Ako stranica nije odmah vidljiva, proverite status objavljivanja u repozitorijumu.
+Dodajte sve fajlove i ceo `assets` folder u koren GitHub repozitorijuma ili javni direktorijum hostinga. Za GitHub Pages odaberite objavljivanje iz grane `main`, folder `/ (root)`, u Settings → Pages.
 
-## Fajlovi
+Nije potreban build, instalacija paketa, Node.js niti backend. Ne menjajte međusobni položaj HTML, CSS, JS fajlova i foldera `assets`. Paket sadrži lokalne fotografije, tako da njihov prikaz ne zavisi od hotlinkovanja.
 
-- `index.html` — stranica i postojeći stilovi.
-- `inquiry-form.js` — zavisni izbor, pretraga, validacija i slanje upita.
-- `inquiry-products.test.js` — odvojeni privremeni podaci za testiranje.
-- `.nojekyll` — statičko objavljivanje bez Jekyll obrade.
+## Proizvodi i izvori
 
-## Test podaci
+`catalog-data.js` je zajednički izvor za stranice kategorija i formu. Sadrži povezane `categories`, `types` i `products` kolekcije. Svaki proizvod ima jedinstveni identifikator, naziv, oznaku, kategoriju, vrstu, fotografiju, opis, osnovne podatke i link ka proizvođaču.
 
-60 izmišljenih proizvoda: 4 kategorije, svaka sa 3 vrste i 15 proizvoda. Sve šifre počinju sa `TEST-`. Nazivi i dimenzije su primeri za UX testiranje; nisu potvrđeni proizvodi, šifre ili specifikacije Rekord Erdeša.
+Ovo su stvarni referentni proizvodi iz javnih kataloga Daikin, Danfoss, Vaillant i Austrotherm, provereni 15. oktobra 2026. To nije potvrđen asortiman ni lager firme Rekord Erdeš.
 
-Podaci imaju kolekcije `categories`, `types` i `products`, povezane preko `categoryId` i `typeId`. Stvarni katalog kasnije može zameniti podatke uz očuvanje ove strukture. Tada izmenite i oznake test kataloga u stranici i email sadržaju.
+Polje `codeKind` razlikuje šifru proizvođača, EAN broj, oznaku modela i oznaku serije. Nisu izmišljene interne šifre. Austrotherm EPS EAN oznake odgovaraju varijantama iz rumunskog kataloga proizvođača. XPS TOP 30 i TOP P predstavljaju serije; debljina se precizira u poruci.
 
-## Forma i email
+Fotografije su preuzete sa izvora proizvođača i lokalno smeštene u `assets/products`. Originalne adrese su u `assets/products/sources.json`. Fotografije serija mogu predstavljati više varijanti, što je označeno u detaljima.
 
-Sačuvani su postojeći Web3Forms endpoint i dostavljeni pristupni ključ u skrivenom polju `access_key` u `index.html`. Ovaj ključ je deo klijentskog HTML-a i vidljiv je posetiocima stranice.
+Stari TEST podaci nisu uključeni u ovaj paket.
 
-Podržan je jedan proizvod po upitu, ili opšti upit uz obaveznu poruku. Naziv i šifra uzimaju se iz istog zapisa proizvoda. Email sadrži podatke kupca, kategoriju, vrstu, naziv, šifru i poruku.
+## Interakcije
 
-Provereni su resetovanje izbora, filtriranje, pretraga, podaci za slanje, uspešan odgovor i greška uz simulirano slanje. Stvarni prijem emaila nije testiran. Nakon objavljivanja pošaljite sopstveni probni upit i proverite povezani inbox i spam folder.
+`catalog.js` upravlja pretragom, filtriranjem po vrsti i dijalogom detalja. Kartice nemaju pojedinačna dugmad za slanje upita; centralna forma ostaje na `upit.html`.
 
-## Napomene
+`inquiry-form.js` upravlja zavisnim izborom kategorije → vrste → proizvoda, pretragom, validacijom i slanjem. Naziv i šifra dolaze iz istog izabranog zapisa. Postojeći Web3Forms endpoint i dostavljeni pristupni ključ su sačuvani. Ključ se nalazi u HTML-u forme.
 
-Ovo je postojeći TermoDom prototip; izvorni sajt Rekord Erdeša nije bio dostavljen. Fotografije su ilustrativne i učitavaju se sa `images.unsplash.com`. Nije uveden novi katalog sa karticama.
+## Provera
+
+Provereni su lokalni linkovi, postojanje fotografija i jedinstvenost oznaka. U pregledaču su provereni prikaz kategorija i fotografija, pretraga po šifri, detalji i izbor stvarnog proizvoda u formi. Proveren je prikaz na 1440 px i 390 px bez horizontalnog prelivanja stranice. Testovi sa simuliranim mrežnim odgovorom proveravaju reset izbora, pretragu, opšti upit, mapiranje naziva/šifre, uspešan odgovor i grešku.
+
+Stvarno slanje i prijem emaila nisu izvršeni tokom ovih provera. Nakon objavljivanja pošaljite sopstveni probni upit.

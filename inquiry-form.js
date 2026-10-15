@@ -17,7 +17,7 @@ function refreshProducts() {
  const matches=productsFor(category.value,type.value,search.value);
  options(product,matches.map(p=>({value:p.id,label:p.name+' | '+p.code})),!type.value?'Prvo izaberi vrstu proizvoda':matches.length?'Izaberi proizvod':'Nema proizvoda za ovu pretragu');
  if(matches.some(p=>p.id===previous))product.value=previous;
- byId('search-help').textContent=type.value ? matches.length+' proizvoda za izabranu vrstu. Pretraži po nazivu ili TEST šifri.' : 'Prvo izaberi kategoriju i vrstu proizvoda.';
+ byId('search-help').textContent=type.value ? matches.length+' proizvoda za izabranu vrstu. Pretraži po nazivu ili šifri ili modelu.' : 'Prvo izaberi kategoriju i vrstu proizvoda.';
  summary();
 }
 function resetType() { options(type,typesFor(category.value).map(t=>({value:t.id,label:t.name})),'Izaberi vrstu proizvoda'); type.disabled=general.checked||!category.value; resetProduct(); }
@@ -43,13 +43,13 @@ function buildPayload() {
  const items = general.checked ? [] : [{category:cat.name,type:kind.name,name:p.name,code:p.code}];
  const data=new FormData(form);data.delete('botcheck');
  const payload=Object.fromEntries(data);
- payload.subject=general.checked?'Opšti upit za proizvod — TEST katalog':'Upit za proizvod — '+p.code;
+ payload.subject=general.checked?'Opšti upit za proizvod — referentni katalog':'Upit za proizvod — '+p.code;
  payload['Tip upita']=general.checked?'Opšti upit':'Upit za jedan proizvod';
  payload['Kategorija proizvoda']=items[0]?.category||'Nije izabrana — opšti upit';
  payload['Vrsta proizvoda']=items[0]?.type||'Nije izabrana — opšti upit';
  payload['Naziv proizvoda']=items[0]?.name||'Nije izabran — opšti upit';
  payload['Šifra proizvoda']=items[0]?.code||'Nema — opšti upit';
- payload['Podaci kataloga']='Privremeni TEST podaci; nisu stvarni artikli Rekord Erdeša';
+ payload['Podaci kataloga']='Referentni proizvodi proizvođača; ponuda Rekord Erdeša nije potvrđena';
  payload['Ime i prezime']=payload.name;payload['Telefon']=payload.phone;payload['Email adresa']=payload.email;payload['Poruka']=message.value.trim();delete payload.name;delete payload.phone;delete payload.message;
  return payload;
 }
