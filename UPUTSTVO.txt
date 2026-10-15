@@ -1,0 +1,18 @@
+TERMODOM — UPUTSTVO ZA HOSTOVANJE
+
+1. Raspakujte ZIP arhivu.
+2. Postavite index.html u javni direktorijum sajta (najčešće public_html, www ili htdocs).
+   index.html mora biti direktno u tom direktorijumu, a ne u dodatnom podfolderu.
+3. Otvorite domen u pregledaču.
+
+Ovo je statički sajt: nisu potrebni Node.js, Python, baza podataka ni build komanda.
+Za hosting preko servisa za statičke sajtove, objavite folder u kom se nalazi index.html.
+Sav CSS i JavaScript već se nalaze u index.html.
+
+VAŽNO O TRENUTNOJ VERZIJI
+- Forma je demonstraciona: ne šalje i ne čuva podatke.
+- Za stvaran prijem upita potrebno je povezati formu sa servisom ili backendom.
+- Fotografije su ilustrativne i učitavaju se sa images.unsplash.com; za njihov prikaz potrebna je internet konekcija.
+- Naziv TermoDom i sadržaj su demo primeri; pre javne upotrebe unesite stvarne podatke firme.
+
+Izvorni fajl za dalje izmene: index.html (UTF-8).
