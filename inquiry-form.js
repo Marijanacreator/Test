@@ -32,6 +32,13 @@ function generalMode() {
 }
 function resetSelection() { general.checked=false;category.value='';generalMode(); }
 options(category,catalog.categories.map(c=>({value:c.id,label:c.name})),'Izaberi kategoriju proizvoda');resetSelection();send.disabled=false;
+// URL nosi samo identifikator. Sva polja izvode se iz proverenog zapisa kataloga.
+const requestedId=new URLSearchParams(window.location.search).get('product');
+if(requestedId){
+ const requested=catalog.products.find(p=>p.id===requestedId);
+ if(requested){category.value=requested.categoryId;resetType();type.value=requested.typeId;resetProduct();product.value=requested.id;summary();}
+ else{result.hidden=false;result.style.background='#fbe8df';result.textContent='Proizvod sa ovog linka nije pronađen. Izaberi proizvod iz liste ili pošalji opšti upit.';}
+}
 category.addEventListener('change',()=>{resetType();clearStatus();});type.addEventListener('change',resetProduct);
 search.addEventListener('input',()=>{refreshProducts();clearStatus();});product.addEventListener('change',()=>{summary();clearStatus();});general.addEventListener('change',generalMode);
 message.addEventListener('input',()=>message.setCustomValidity(''));

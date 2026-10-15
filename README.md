@@ -34,7 +34,7 @@ Stari TEST podaci nisu uključeni u ovaj paket.
 
 ## Interakcije
 
-`catalog.js` upravlja pretragom, filtriranjem po vrsti i dijalogom detalja. Kartice nemaju pojedinačna dugmad za slanje upita; centralna forma ostaje na `upit.html`.
+`catalog.js` upravlja pretragom, filtriranjem po vrsti i dijalogom detalja. Svaka kartica ima dugme „Pošalji upit“. Link prenosi identifikator proizvoda u centralnu formu na `upit.html`, koja automatski bira kategoriju, vrstu i proizvod. Šifra i naziv se izvode iz zapisa kataloga. Kupac unosi kontakt podatke i opcionu poruku. Nepoznat identifikator prikazuje obaveštenje i omogućava ručni izbor.
 
 `inquiry-form.js` upravlja zavisnim izborom kategorije → vrste → proizvoda, pretragom, validacijom i slanjem. Naziv i šifra dolaze iz istog izabranog zapisa. Postojeći Web3Forms endpoint i dostavljeni pristupni ključ su sačuvani. Ključ se nalazi u HTML-u forme.
 
@@ -43,3 +43,4 @@ Stari TEST podaci nisu uključeni u ovaj paket.
 Provereni su lokalni linkovi, postojanje fotografija i jedinstvenost oznaka. U pregledaču su provereni prikaz kategorija i fotografija, pretraga po šifri, detalji i izbor stvarnog proizvoda u formi. Proveren je prikaz na 1440 px i 390 px bez horizontalnog prelivanja stranice. Testovi sa simuliranim mrežnim odgovorom proveravaju reset izbora, pretragu, opšti upit, mapiranje naziva/šifre, uspešan odgovor i grešku.
 
 Stvarno slanje i prijem emaila nisu izvršeni tokom ovih provera. Nakon objavljivanja pošaljite sopstveni probni upit.
+
