@@ -11,7 +11,10 @@ const productsFor = (cid, tid, query='') => catalog.products.filter(p => p.categ
 function selectedRecord() { return catalog.products.find(p => p.id === product.value && p.categoryId === category.value && p.typeId === type.value); }
 function options(select, entries, placeholder) { select.replaceChildren(new Option(placeholder,'')); entries.forEach(e => select.add(new Option(e.label,e.value))); }
 function clearStatus() { result.hidden=true; }
-function summary() { const p=selectedRecord(); byId('selection-summary').textContent = general.checked ? 'Opšti upit — nije potreban konkretan proizvod.' : p ? 'Izabrano: '+p.name+' | '+p.code : 'Proizvod još nije izabran.'; product.setCustomValidity(''); }
+function summary() { const p=selectedRecord();
+ const panel=byId('selected-product-panel');
+ if(panel){panel.hidden=!p||general.checked;if(p){byId('selected-product-name').textContent=p.name;byId('selected-product-code').textContent=p.codeKind+': '+p.code;byId('selected-product-path').textContent=catalog.categories.find(c=>c.id===p.categoryId).name+' / '+catalog.types.find(t=>t.id===p.typeId).name;}}
+ byId('selection-summary').textContent = general.checked ? 'Opšti upit — nije potreban konkretan proizvod.' : p ? 'Izabrano: '+p.name+' | '+p.code : 'Proizvod još nije izabran.'; product.setCustomValidity(''); }
 function refreshProducts() {
  const previous=product.value;
  const matches=productsFor(category.value,type.value,search.value);
@@ -30,13 +33,16 @@ function generalMode() {
  if(general.checked){category.value='';resetType();}else{resetType();}
  message.setCustomValidity('');summary();clearStatus();
 }
-function resetSelection() { general.checked=false;category.value='';generalMode(); }
+function resetSelection() { general.checked=false;category.value='';generalMode();[category,type,product,search,general].forEach(el=>{const field=el.closest?.('.field');if(field)field.hidden=false;}); }
 options(category,catalog.categories.map(c=>({value:c.id,label:c.name})),'Izaberi kategoriju proizvoda');resetSelection();send.disabled=false;
 // URL nosi samo identifikator. Sva polja izvode se iz proverenog zapisa kataloga.
 const requestedId=new URLSearchParams(window.location.search).get('product');
+const selectionFields=[category,type,product,search,general].map(el=>el.closest?.('.field')).filter(Boolean);
+function compactSelection(compact){selectionFields.forEach(field=>field.hidden=compact);}
+byId('change-selected-product')?.addEventListener('click',()=>{compactSelection(false);category.focus();});
 if(requestedId){
  const requested=catalog.products.find(p=>p.id===requestedId);
- if(requested){category.value=requested.categoryId;resetType();type.value=requested.typeId;resetProduct();product.value=requested.id;summary();}
+ if(requested){category.value=requested.categoryId;resetType();type.value=requested.typeId;resetProduct();product.value=requested.id;summary();compactSelection(true);}
  else{result.hidden=false;result.style.background='#fbe8df';result.textContent='Proizvod sa ovog linka nije pronađen. Izaberi proizvod iz liste ili pošalji opšti upit.';}
 }
 category.addEventListener('change',()=>{resetType();clearStatus();});type.addEventListener('change',resetProduct);
